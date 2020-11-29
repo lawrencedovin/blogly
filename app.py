@@ -1,50 +1,55 @@
-from flask import Flask, request, render_template, flash, redirect
-from flask import session, make_response
+from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from random import randint, choice, sample
-from operator import itemgetter
-from surveys import *
+# from models import db, connect_db, Pet
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'oh-so-secret'
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-# debug = DebugToolbarExtension(app)
 
-SATISFACTION_SURVEY = surveys["satisfaction"]
-QUESTIONS = SATISFACTION_SURVEY.questions
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///pet_shop_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
+app.config['SECRET_KEY'] = 'cluckcluck'
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+debug = DebugToolbarExtension(app)
+
+connect_db(app)
 
 @app.route('/')
-def get_home():
-    title = SATISFACTION_SURVEY.title
-    instructions = SATISFACTION_SURVEY.instructions
-    session['responses'] = []
-    return render_template('home.html' , title=title, instructions=instructions)
+def home_page():
+    """Shows home page"""
+    return render_template('home.html')
 
-@app.route('/questions/<int:id>')
-def get_question(id):
-    try:
-        question = QUESTIONS[id].question
-        choices = QUESTIONS[id].choices
-        return render_template('question.html', question=question, choices=choices, id=id)
-    except:
-        flash(f'Incorrect ID entered: {id}', 'error')
-        return redirect(f'/questions/{len(session["responses"])}')
+@app.route('/list')
+def list_pets():
+    """List pets and show add form."""
 
-@app.route('/answer', methods=['POST'])
-def get_answer():
-    response = session['responses']
-    response.append(request.form['answer'])
-    session['responses'] = response
-    if len(QUESTIONS) == len(session['responses']):
-        session['responses'] = []
-        return redirect('/complete')
-    else:
-        return redirect(f'/questions/{len(session["responses"])}')
-        
-    
-@app.route('/complete')
-def complete_survey():
-    return render_template('complete.html')
+    pets = Pet.query.all()
+    return render_template('list.html', pets=pets)
+
+@app.route('/list', methods=['POST'])
+def create_pet():
+    name = request.form['name']
+    species = request.form['species']
+    hunger = request.form['hunger']
+    hunger = int(hunger) if hunger else None
+
+    new_pet = Pet(name=name, species=species, hunger=hunger)
+    db.session.add(new_pet)
+    db.session.commit()
+
+    return redirect(f'/{new_pet.id}')
+
+@app.route('/<int:pet_id>')
+def get_pet_details(pet_id):
+    """Shows specific details of pet"""
+
+    pet = Pet.query.get_or_404(pet_id)
+
+    return render_template('pet-details.html', pet=pet)
+
+@app.route('/species/<species_id>')
+def show_pets_by_species(species_id):
+    pets = Pet.get_by_species(species_id)
+    return render_template('species.html', pets=pets, species=species_id)
 
 # 404 Error handling
 @app.errorhandler(404) 
