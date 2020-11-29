@@ -14,9 +14,11 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 
 @app.route('/')
-def home_page():
-    """Shows home page"""
-    return render_template('home.html')
+def list_users():
+    """List all Users"""
+    users = User.query.all()
+
+    return render_template('list.html', users=users)
 
 # @app.route('/list')
 # def list_pets():
