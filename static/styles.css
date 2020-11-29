@@ -1,0 +1,105 @@
+html {
+  box-sizing: border-box;
+  font-family: "Roboto";
+  font-size: 62.5%;
+  height: 100%;
+  width: 100%;
+
+  @media only screen and (max-width: 75em) {
+    font-size: 50%;
+  }
+}
+
+body {
+  background: linear-gradient(180deg, #00ffe0 0%, #ff9900 100%);
+}
+
+input {
+    width: 2rem;
+    height: 2rem;
+}
+
+input[type="radio"] {
+  margin: -.5rem 1rem 0 0;
+  vertical-align: middle;
+}
+
+label {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.question-progress-container, .survey-form {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.title {
+    margin-bottom: 3rem;
+}
+
+.btn {
+    background: #82ffeb;
+    padding: 1rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border-radius: 0;
+    width: 100%;
+}
+
+.btn:hover {
+    background: #6cd2c2;
+}
+
+.form-background-container, .survey-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-background-container {
+  height: 54rem;
+  width: 90rem;
+}
+.form-background--left,
+.form-background--right {
+  height: 100%;
+}
+
+.form-background--left {
+  background: #ff9900;
+}
+
+.form-background--right {
+  background: #000;
+}
+
+.survey-form {
+  height: 40rem;
+  width: 65rem;
+  background: #fff;
+  z-index: 1;
+  padding: 6rem;
+}
+
+.question-progress-container{
+  background: #82ffeb;
+    padding: 1rem;
+    width: 20rem;
+    text-align: center;
+    margin: -9rem auto 6rem;
+}
+
+.status-title {
+  text-align: center;
+  font-size: 4rem;
+  margin-top: 8.5rem;
+}
+
+.error {
+  margin-top: 3rem;
+  padding: 1rem;
+  border: 2px solid #C90035;
+  display: inline-block;
+  font-size: 1.5rem;
+}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<div class="container">
+  <div class="form-background-container row">
+    <div class="form-background--left col-6"></div>
+    <div class="form-background--right col-6"></div>
+  </div>
+  <div class="row">
+    <div class="survey-form col">
+      <div class="question-progress-container">
+        <h2>Question {{id + 1}} of 4</h2>
+      </div>
+      <h1 class="title">{{question}}</h1>
+      <form action="/answer" method="POST">
+        {% for choice in choices %}
+        <input
+          type="radio"
+          id="{{id}}"
+          name="answer"
+          value="{{choice.lower()}}"
+          required
+        />
+        <label for="{{choice.lower()}}">{{choice}}</label><br />
+        {% endfor %}
+        {% for category, msg in get_flashed_messages(with_categories=true) %}
+        <p class="{{category}}">{{msg}}</p>
+        {% endfor %}
+        <button class="btn fixed-bottom">CONTINUE</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
