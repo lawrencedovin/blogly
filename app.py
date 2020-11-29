@@ -18,38 +18,38 @@ def home_page():
     """Shows home page"""
     return render_template('home.html')
 
-@app.route('/list')
-def list_pets():
-    """List pets and show add form."""
+# @app.route('/list')
+# def list_pets():
+#     """List pets and show add form."""
 
-    pets = Pet.query.all()
-    return render_template('list.html', pets=pets)
+#     pets = Pet.query.all()
+#     return render_template('list.html', pets=pets)
 
-@app.route('/list', methods=['POST'])
-def create_pet():
-    name = request.form['name']
-    species = request.form['species']
-    hunger = request.form['hunger']
-    hunger = int(hunger) if hunger else None
+# @app.route('/list', methods=['POST'])
+# def create_pet():
+#     name = request.form['name']
+#     species = request.form['species']
+#     hunger = request.form['hunger']
+#     hunger = int(hunger) if hunger else None
 
-    new_pet = Pet(name=name, species=species, hunger=hunger)
-    db.session.add(new_pet)
-    db.session.commit()
+#     new_pet = Pet(name=name, species=species, hunger=hunger)
+#     db.session.add(new_pet)
+#     db.session.commit()
 
-    return redirect(f'/{new_pet.id}')
+#     return redirect(f'/{new_pet.id}')
 
-@app.route('/<int:pet_id>')
-def get_pet_details(pet_id):
-    """Shows specific details of pet"""
+# @app.route('/<int:pet_id>')
+# def get_pet_details(pet_id):
+#     """Shows specific details of pet"""
 
-    pet = Pet.query.get_or_404(pet_id)
+#     pet = Pet.query.get_or_404(pet_id)
 
-    return render_template('pet-details.html', pet=pet)
+#     return render_template('pet-details.html', pet=pet)
 
-@app.route('/species/<species_id>')
-def show_pets_by_species(species_id):
-    pets = Pet.get_by_species(species_id)
-    return render_template('species.html', pets=pets, species=species_id)
+# @app.route('/species/<species_id>')
+# def show_pets_by_species(species_id):
+#     pets = Pet.get_by_species(species_id)
+#     return render_template('species.html', pets=pets, species=species_id)
 
 # 404 Error handling
 @app.errorhandler(404) 
