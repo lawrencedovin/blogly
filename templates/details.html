@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{full_name}} Details{% endblock %}
+
+{% block content %}
+<h2>User Detail Page</h2>
+<img src="{{user.image_url}}" alt="" height="42" width="42">
+<h1>{{full_name}}</h1>
+<a class="btn btn-secondary" href="/users/{{user.id}}/edit" role="button">Edit</a>
+{% endblock %}
