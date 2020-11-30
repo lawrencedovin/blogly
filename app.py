@@ -24,6 +24,7 @@ def list_users():
 @app.route('/users/new')
 def show_create_user_form():
     """Get view for create user form"""
+    
     return render_template('create-form.html')
 
 @app.route('/users/new', methods=['POST'])
@@ -43,12 +44,14 @@ def create_user():
 def get_user_details(user_id):
     user = User.query.get_or_404(user_id)
     full_name = user.get_full_name()
+
     return render_template('details.html', user=user, full_name=full_name)
 
 @app.route('/users/<int:user_id>/edit')
 def show_edit_user_form(user_id):
     user = User.query.get_or_404(user_id)
     full_name = user.get_full_name()
+
     return render_template('edit-form.html', user=user, full_name=full_name)
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
@@ -59,6 +62,7 @@ def edit_user(user_id):
     user.image_url = request.form['imageUrl']
 
     db.session.commit()
+
     return redirect('/')
 
 @app.route('/users/<int:user_id>/delete', methods=['POST'])
@@ -71,5 +75,6 @@ def delete_user(user_id):
 # 404 Error handling
 @app.errorhandler(404) 
 def not_found(e): 
+
   return render_template('404.html') 
 
