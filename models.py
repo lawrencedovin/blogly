@@ -43,4 +43,4 @@ class Post(db.Model):
     def __repr__(self):
         return f'<Post - title: {self.title} created_at: {self.created_at}>'
 
-    user = db.relationship('User', backref='post')                
+    user = db.relationship('User', backref='posts')                

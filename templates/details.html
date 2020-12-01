@@ -1,17 +1,38 @@
-{% extends 'base.html' %}
-{% block title %}{{full_name}} Details{% endblock %}
-
+{% extends 'base.html' %} {% block title %}{{full_name}} Details{% endblock %}
 {% block content %}
-<div class="form-background-container row justify-content-md-center">
+<div class="form-background-container justify-content-md-center">
+  <div class="row">
     <div class="col-3">
-        <img src="{{user.image_url}}" alt="" height="100" width="100">
+      <img src="{{user.image_url}}" alt="" height="100" width="100" />
     </div>
     <div class="col">
+      <div class="row">
         <h1>{{full_name}}</h1>
-        <a class="btn btn-primary float-left" href="/users/{{user.id}}/edit" role="button">Edit</a>
+      </div>
+      <div class="row">
+        <a
+          class="btn btn-primary float-left"
+          href="/users/{{user.id}}/edit"
+          role="button"
+          >Edit</a
+        >
         <form action="/users/{{user.id}}/delete" method="POST">
-            <button type="submit" class="btn btn-danger float-left">Delete</button>
+          <button type="submit" class="btn btn-danger float-left">
+            Delete
+          </button>
         </form>
+      </div>
+      <div class="row mt-3">
+        <h1>Posts</h1>
+      </div>
+      <div class="row">
+        <ul>
+          {% for post in user.posts %}
+          <li>{{post.title}}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
