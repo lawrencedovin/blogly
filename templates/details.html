@@ -7,33 +7,31 @@
     </div>
     <div class="col">
       <div class="row">
-        <h1>{{full_name}}</h1>
+        <h1 class="col-md-12">{{full_name}}</h1>
+        <div class="col-md-12">
+          <a
+            class="btn btn-primary float-left"
+            href="/users/{{user.id}}/edit"
+            role="button"
+            >Edit</a
+          >
+          <form action="/users/{{user.id}}/delete" method="POST">
+            <button type="submit" class="btn btn-danger float-left">
+              Delete
+            </button>
+          </form>
+        </div>
+        <h1 class="col-md-12 mt-3">Posts</h1>
+        <div class="col-md-12">
+          <ul>
+            {% for post in user.posts %}
+            <li>{{post.title}} - {{post.get_formatted_date()}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <a type="button" href="/users/{{user.id}}/posts/new"></a>
       </div>
-      <div class="row">
-        <a
-          class="btn btn-primary float-left"
-          href="/users/{{user.id}}/edit"
-          role="button"
-          >Edit</a
-        >
-        <form action="/users/{{user.id}}/delete" method="POST">
-          <button type="submit" class="btn btn-danger float-left">
-            Delete
-          </button>
-        </form>
-      </div>
-      <div class="row mt-3">
-        <h1>Posts</h1>
-      </div>
-      <div class="row">
-        <ul>
-          {% for post in user.posts %}
-          <li>{{post.title}} - {{post.get_formatted_date()}}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <a type="button" href="/users/{{user.id}}/posts/new"></a>
     </div>
   </div>
+  {% endblock %}
 </div>
-{% endblock %}
