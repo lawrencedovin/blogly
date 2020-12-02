@@ -45,7 +45,7 @@ def get_user_details(user_id):
     user = User.query.get_or_404(user_id)
     full_name = user.get_full_name()
 
-    return render_template('details.html', user=user, full_name=full_name)
+    return render_template('user-details.html', user=user, full_name=full_name)
 
 @app.route('/users/<int:user_id>/edit')
 def show_edit_user_form(user_id):
@@ -89,6 +89,19 @@ def add_post(user_id):
     db.session.commit()
 
     return redirect(f'/users/{user_id}')
+
+@app.route('/posts/<int:post_id>')
+def get_post_details(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get(post.user_id)
+
+    return render_template('post-details.html', post=post, user=user)
+
+@app.route('/posts/<int:post_id>/edit')
+def show_edit_post_form(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    return render_template('edit-post-form.html', post=post)
 
 # 404 Error handling
 @app.errorhandler(404) 

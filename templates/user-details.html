@@ -26,7 +26,7 @@
         <div class="col-md-12">
           <ul>
             {% for post in user.posts %}
-            <li>{{post.title}} - {{post.get_formatted_date()}}</li>
+            <li><a href="/posts/{{post.id}}">{{post.title}} - {{post.get_formatted_date()}}</a></li>
             {% endfor %}
           </ul>
         </div>
