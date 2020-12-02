@@ -38,7 +38,7 @@ def create_user():
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(f'/users/{new_user.id}')
+    return redirect('/')
 
 @app.route('/users/<int:user_id>')
 def get_user_details(user_id):
@@ -100,7 +100,7 @@ def get_post_details(post_id):
 @app.route('/posts/<int:post_id>/edit')
 def show_edit_post_form(post_id):
     post = Post.query.get_or_404(post_id)
-    user = User.query.get(post.user_id)
+    user = post.user
 
     return render_template('edit-post-form.html', post=post, user=user)
 
