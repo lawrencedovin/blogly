@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% block title %}{{full_name}} Details{% endblock %}
+{% extends 'base.html' %} 
+{% block title %} {{full_name}} Details {% endblock %}
 {% block content %}
 <div class="form-background-container justify-content-md-center">
   <div class="row">
@@ -29,9 +30,16 @@
             {% endfor %}
           </ul>
         </div>
-        <a type="button" href="/users/{{user.id}}/posts/new"></a>
+        <div class="col-md-12">
+          <a
+            class="btn btn-primary"
+            href="/users/{{user.id}}/posts/new"
+            role="button"
+            >Add Post</a
+          >
+        </div>
       </div>
     </div>
   </div>
-  {% endblock %}
 </div>
+{% endblock %}
