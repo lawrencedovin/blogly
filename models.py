@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -29,7 +30,7 @@ class User(db.Model):
 
     def get_full_name(self):
         user = self
-        return f"{user.first_name} {user.last_name}"
+        return f'{user.first_name} {user.last_name}'
     
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -42,5 +43,15 @@ class Post(db.Model):
 
     def __repr__(self):
         return f'<Post - title: {self.title} created_at: {self.created_at}>'
+
+    def get_formatted_date(self):
+        created_at = self.created_at
+        year = created_at.year
+        month = created_at.strftime("%B")
+        day = created_at.strftime("%d")
+        date = f'{month} {day}, {year}'
+        time = f'{created_at.strftime("%I")}:{created_at.strftime("%M")} {created_at.strftime("%p")}'
+        
+        return f'{date}, {time}'
 
     user = db.relationship('User', backref='posts')                

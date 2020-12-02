@@ -28,10 +28,11 @@
       <div class="row">
         <ul>
           {% for post in user.posts %}
-          <li>{{post.title}}</li>
+          <li>{{post.title}} - {{post.get_formatted_date()}}</li>
           {% endfor %}
         </ul>
       </div>
+      <a type="button" href="/users/{{user.id}}/posts/new"></a>
     </div>
   </div>
 </div>
