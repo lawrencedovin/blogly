@@ -25,7 +25,7 @@ def list_users():
 def show_create_user_form():
     """Get view for create user form"""
     
-    return render_template('create-form.html')
+    return render_template('form/create-user.html')
 
 @app.route('/users/new', methods=['POST'])
 def create_user():
@@ -52,7 +52,7 @@ def show_edit_user_form(user_id):
     user = User.query.get_or_404(user_id)
     full_name = user.get_full_name()
 
-    return render_template('edit-form.html', user=user, full_name=full_name)
+    return render_template('form/edit-user.html', user=user, full_name=full_name)
 
 @app.route('/users/<int:user_id>/edit', methods=['POST'])
 def edit_user(user_id):
@@ -76,7 +76,7 @@ def delete_user(user_id):
 def show_add_post_form(user_id):
     user = User.query.get_or_404(user_id)
 
-    return render_template('add-post-form.html', user=user)
+    return render_template('form/add-post.html', user=user)
 
 @app.route('/users/<int:user_id>/posts/new', methods=['POST'])
 def add_post(user_id):
@@ -102,7 +102,7 @@ def show_edit_post_form(post_id):
     post = Post.query.get_or_404(post_id)
     user = post.user
 
-    return render_template('edit-post-form.html', post=post, user=user)
+    return render_template('form/edit-post.html', post=post, user=user)
 
 @app.route('/posts/<int:post_id>/edit', methods=['POST'])
 def edit_post(post_id):
