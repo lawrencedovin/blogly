@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% block title %} Add Post for {{user.get_full_name()}} {% endblock %}
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            Add Post for {{user.get_full_name()}}
+            <h1>Add Post for {{user.get_full_name()}}</h1>
         </div>
         <div class="col-md-12"></div>
         <div class="col-md-12"></div>
@@ -23,7 +24,15 @@
             <label for="postContentInput">Content</label>
             <textarea name="postContentInput" class="form-control" id="postContentInput" rows="3"></textarea>
           </div>
-        <button type="submit" class="btn btn-success float-right">Add</button>
+        <div class="row float-right">
+          <a
+            class="btn btn-info"
+            href="/users/{{user.id}}"
+            role="button"
+            >Cancel</a
+          >
+          <button type="submit" class="btn btn-success">Add</button>
+        </div>
       </form>
 </div>
 {% endblock %}
