@@ -78,6 +78,18 @@ def show_add_post_form(user_id):
 
     return render_template('add-post-form.html', user=user)
 
+@app.route('/users/<int:user_id>/posts/new', methods=['POST'])
+def add_post(user_id):
+    title = request.form['postTitleInput']
+    content = request.form['postContentInput']
+
+    post = Post(title=title, content=title, user_id=user_id)
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
 # 404 Error handling
 @app.errorhandler(404) 
 def not_found(e): 
