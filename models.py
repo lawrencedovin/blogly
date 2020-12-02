@@ -50,7 +50,11 @@ class Post(db.Model):
         month = created_at.strftime("%B")
         day = created_at.strftime("%d")
         date = f'{month} {day}, {year}'
-        time = f'{created_at.strftime("%I")}:{created_at.strftime("%M")} {created_at.strftime("%p")}'
+
+        hour = created_at.strftime("%I")
+        minute = created_at.strftime("%M")
+        am_pm = created_at.strftime("%p")
+        time = f'{hour}:{minute} {am_pm}'
         
         return f'{date}, {time}'
 

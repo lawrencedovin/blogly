@@ -114,6 +114,8 @@ def edit_post(post_id):
 
     return redirect(f'/posts/{post_id}')
 
+
+
 # 404 Error handling
 @app.errorhandler(404) 
 def not_found(e): 
