@@ -100,8 +100,19 @@ def get_post_details(post_id):
 @app.route('/posts/<int:post_id>/edit')
 def show_edit_post_form(post_id):
     post = Post.query.get_or_404(post_id)
+    user = User.query.get(post.user_id)
 
-    return render_template('edit-post-form.html', post=post)
+    return render_template('edit-post-form.html', post=post, user=user)
+
+@app.route('/posts/<int:post_id>/edit', methods=['POST'])
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    post.title = request.form['postTitleInput']
+    post.content = request.form['postContentInput']
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
 
 # 404 Error handling
 @app.errorhandler(404) 
