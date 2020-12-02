@@ -114,7 +114,15 @@ def edit_post(post_id):
 
     return redirect(f'/posts/{post_id}')
 
+@app.route('/posts/<int:post_id>/delete', methods=['POST'])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    user_id = post.user.id
 
+    Post.query.filter_by(id=post_id).delete()
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
 
 # 404 Error handling
 @app.errorhandler(404) 
