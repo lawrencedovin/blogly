@@ -10,11 +10,11 @@ app.config['SQLALCHEMY_ECHO'] = False
 db.drop_all()
 db.create_all()
 
-class PetModelTestCase(TestCase):
-    """Tests for model for Pets."""
+class UserModelTestCase(TestCase):
+    """Tests for model for User."""
 
     def setUp(self):
-        """Clean up any existing pets."""
+        """Clean up any existing users."""
         User.query.delete()
     
     def tearDown(self):
