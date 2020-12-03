@@ -61,3 +61,57 @@ class UserViewsTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Test User2', html)
+
+class PostViewsTestCase(TestCase):
+    """Tests for views for Post."""
+    # DETAIL:  Key (id)=(1) is still referenced from table "posts".
+    def setUp(self):
+        """Add sample post."""
+        User.query.delete()
+        Post.query.delete()
+
+        user = User(first_name='Test', last_name='User', image_url='https://images.unsplash.com/photo-1517783999520-f068d7431a60?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80')
+        post = Post(title='First Post!', content='Hello', user_id=1)
+        
+        db.session.add_all([user, post])
+        
+        db.session.commit()
+
+        self.user_id = user.id
+        self.user = user
+
+        self.post_id = post.id
+        self.post = post
+
+    def tearDown(self):
+        """Clean up any fouled transaction."""
+
+        db.session.rollback()
+
+    def test_get_user_details(self):
+        """Check if post's title is listed on user details page"""
+
+        with app.test_client() as client:
+            resp = client.get(f'/users/{self.user_id}')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('First Post!', html)
+
+    # def test_get_post_details(self):
+    #     with app.test_client() as client:
+    #         resp = client.get(f'/users/{self.user_id}')
+    #         html = resp.get_data(as_text=True)
+
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertIn('Test User', html)
+
+    # def test_add_post(self):
+    #     with app.test_client() as client:
+    #         user2 = {'first_name':'Test', 'last_name':'User2', 'image_url':'https://images.unsplash.com/photo-1517783999520-f068d7431a60?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80'}
+    #         resp = client.post('/users/new', data=user2, follow_redirects=True)
+    #         html = resp.get_data(as_text=True)
+
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertIn('Test User2', html)
+
