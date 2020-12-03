@@ -80,8 +80,8 @@ def show_add_post_form(user_id):
 
 @app.route('/users/<int:user_id>/posts/new', methods=['POST'])
 def add_post(user_id):
-    title = request.form['postTitleInput']
-    content = request.form['postContentInput']
+    title = request.form['title']
+    content = request.form['content']
 
     post = Post(title=title, content=title, user_id=user_id)
 
@@ -93,7 +93,7 @@ def add_post(user_id):
 @app.route('/posts/<int:post_id>')
 def get_post_details(post_id):
     post = Post.query.get_or_404(post_id)
-    user = User.query.get(post.user_id)
+    user = post.user
 
     return render_template('details/post.html', post=post, user=user)
 
@@ -107,8 +107,8 @@ def show_edit_post_form(post_id):
 @app.route('/posts/<int:post_id>/edit', methods=['POST'])
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
-    post.title = request.form['postTitleInput']
-    post.content = request.form['postContentInput']
+    post.title = request.form['title']
+    post.content = request.form['content']
 
     db.session.commit()
 
