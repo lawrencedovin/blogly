@@ -87,30 +87,26 @@ class PostViewsTestCase(TestCase):
 
         db.session.rollback()
 
-    def test_get_user_details(self):
-        """Check if post's title is listed on user details page"""
+    def test_get_post_details(self):
+        """Check post details page"""
 
         with app.test_client() as client:
-            resp = client.get(f'/users/{self.user_id}')
+            resp = client.get(f'/posts/{self.post_id}')
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('First Post!', html)
+            self.assertIn(self.post.title, html)
+            self.assertIn(self.post.content, html)
+            self.assertIn(self.user.get_full_name(), html)
 
-    # def test_get_post_details(self):
-    #     with app.test_client() as client:
-    #         resp = client.get(f'/users/{self.user_id}')
-    #         html = resp.get_data(as_text=True)
+    def test_add_post(self):
+        """Checks if post was added properly"""
 
-    #         self.assertEqual(resp.status_code, 200)
-    #         self.assertIn('Test User', html)
+        with app.test_client() as client:
+            post2 = {'title':'Second Post!', 'content':'World', 'user_id':1}
+            resp = client.post(f'/users/{self.user_id}/posts/new', data=post2, follow_redirects=True)
+            html = resp.get_data(as_text=True)
 
-    # def test_add_post(self):
-    #     with app.test_client() as client:
-    #         user2 = {'first_name':'Test', 'last_name':'User2', 'image_url':'https://images.unsplash.com/photo-1517783999520-f068d7431a60?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80'}
-    #         resp = client.post('/users/new', data=user2, follow_redirects=True)
-    #         html = resp.get_data(as_text=True)
-
-    #         self.assertEqual(resp.status_code, 200)
-    #         self.assertIn('Test User2', html)
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Second Post!', html)
 
