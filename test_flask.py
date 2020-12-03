@@ -23,6 +23,7 @@ class UserViewsTestCase(TestCase):
     def setUp(self):
         """Add sample user."""
 
+        Post.query.delete()
         User.query.delete()
 
         user = User(first_name='Test', last_name='User', image_url='https://images.unsplash.com/photo-1517783999520-f068d7431a60?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80')
@@ -64,11 +65,9 @@ class UserViewsTestCase(TestCase):
 
 class PostViewsTestCase(TestCase):
     """Tests for views for Post."""
-    # DETAIL:  Key (id)=(1) is still referenced from table "posts".
+
     def setUp(self):
         """Add sample post."""
-        User.query.delete()
-        Post.query.delete()
 
         user = User(first_name='Test', last_name='User', image_url='https://images.unsplash.com/photo-1517783999520-f068d7431a60?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1650&q=80')
         post = Post(title='First Post!', content='Hello', user_id=1)
