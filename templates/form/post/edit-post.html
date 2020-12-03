@@ -11,18 +11,18 @@
     </div>
     <form action="/posts/{{post.id}}/edit" method="POST">
         <div class="form-group">
-          <label for="postTitleInput">Title</label>
+          <label for="title">Title</label>
           <input
             type="text"
             name="title"
             class="form-control"
-            id="postTitleInput"
+            id="title"
             placeholder="Enter a title"
           />
         </div>
         <div class="form-group">
-            <label for="postContentInput">Content</label>
-            <textarea name="content" class="form-control" id="postContentInput" rows="3"></textarea>
+            <label for="content">Content</label>
+            <textarea name="content" class="form-control" id="content" rows="3"></textarea>
           </div>
         <div class="row float-right">
           <a
