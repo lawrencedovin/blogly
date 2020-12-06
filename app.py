@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from sqlalchemy import desc, asc
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import *
 
 app = Flask(__name__)
 

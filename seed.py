@@ -1,6 +1,6 @@
 """"Seed file to make sample data for blogly db."""
 
-from models import User, Post, db
+from models import *
 from app import app
 
 # Create all tables
