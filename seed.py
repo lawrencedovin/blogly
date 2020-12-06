@@ -19,9 +19,16 @@ miguel = User(first_name='Miguel', last_name='Servin', image_url='https://images
 post1 = Post(title='First Post!', content='Hello', user_id=1)
 post2 = Post(title='Puberty the Horror', content='Bad', user_id=1)
 
+# Add tags
+fun_tag = Tag(name='Fun')
+cool_tag = Tag(name='Cool')
+hip_tag = Tag(name='Hip')
+fancy_tag = Tag(name='Fancy')
+
 # Add new object to session, so they'll persist
 db.session.add_all([lawrence, julie, miguel])
 db.session.add_all([post1, post2])
+db.session.add_all([fun_tag, cool_tag, hip_tag, fancy_tag])
 
 # Commit confirms changes and makes it permanent
 db.session.commit()
