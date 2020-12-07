@@ -59,12 +59,17 @@ class Post(db.Model):
         return f'{date}, {time}'
 
     user = db.relationship('User', backref='posts')
+    tags = db.relationship('Tag', secondary='posts_tags', backref='posts')
+    posts_tags = db.relationship('PostTag', backref='post')
+
 
 class Tag(db.Model):
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(20 ), nullable=False, unique=True)
+    name = db.Column(db.String(20), nullable=False, unique=True)
+
+    posts_tags = db.relationship('PostTag', backref='tag')
 
 class PostTag(db.Model):
     __tablename__ = 'posts_tags'

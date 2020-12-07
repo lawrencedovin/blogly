@@ -25,10 +25,20 @@ cool_tag = Tag(name='Cool')
 hip_tag = Tag(name='Hip')
 fancy_tag = Tag(name='Fancy')
 
+# Add post tag relationships
+first_fun_tag = PostTag(post_id=1, tag_id=1)
+first_hip_tag = PostTag(post_id=1, tag_id=3)
+puberty_fun_tag = PostTag(post_id=2, tag_id=1)
+puberty_cool_tag = PostTag(post_id=2, tag_id=2)
+
 # Add new object to session, so they'll persist
 db.session.add_all([lawrence, julie, miguel])
 db.session.add_all([post1, post2])
 db.session.add_all([fun_tag, cool_tag, hip_tag, fancy_tag])
 
 # Commit confirms changes and makes it permanent
+db.session.commit()
+
+# Add post to tag relationship after initial data has been entered
+db.session.add_all([first_fun_tag, first_hip_tag, puberty_fun_tag, puberty_cool_tag])
 db.session.commit()
