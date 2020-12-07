@@ -155,6 +155,14 @@ def get_tag_details(tag_id):
 
     return render_template('details/tag.html', tag=tag)
 
+@app.route('/tags/<int:tag_id>/edit')
+def show_edit_tag_form(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+
+    return render_template('form/post/edit/tag.html', tag=tag)
+
+# @app.route('/tags/edit/<int:tag_id>')
+# def edit_tag(tag_id):
 
 # 404 Error handling
 @app.errorhandler(404) 
