@@ -145,6 +145,17 @@ def add_tag():
 
     return redirect('/tags')
 
+@app.route('/tags/<int:tag_id>')
+def get_tag_details(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+    # tag.name = request.form['name']
+
+    db.session.add(tag)
+    db.session.commit()
+
+    return render_template('details/tag.html', tag=tag)
+
+
 # 404 Error handling
 @app.errorhandler(404) 
 def not_found(e): 

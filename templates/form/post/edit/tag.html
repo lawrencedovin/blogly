@@ -1,31 +1,27 @@
 {% extends 'base.html' %}
-{% block title %} Edit Post for {{post.title}} {% endblock %}
+{% block title %} Edit Tag for {{tag.name}}{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Edit Post for {{post.title}}</h1>
+            <h1>Edit Tag for {{tag.title}}</h1>
         </div>
     </div>
-    <form action="/posts/{{post.id}}/edit" method="POST">
+    <form action="/tags/{{tag.id}}/edit" method="POST">
         <div class="form-group">
-          <label for="title">Title</label>
+          <label for="name">Name</label>
           <input
             type="text"
-            name="title"
+            name="name"
             class="form-control"
-            id="title"
-            placeholder="Enter a title"
+            id="name"
+            placeholder="Enter a name for the tag"
           />
         </div>
-        <div class="form-group">
-            <label for="content">Content</label>
-            <textarea name="content" class="form-control" id="content" rows="3"></textarea>
-          </div>
         <div class="row float-right">
           <a
             class="btn btn-outline-info"
-            href="/users/{{user.id}}"
+            href="/tags/{{tag.id}}"
             role="button"
             >Cancel</a
           >
