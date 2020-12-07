@@ -106,15 +106,23 @@ def get_post_details(post_id):
 def show_edit_post_form(post_id):
     post = Post.query.get_or_404(post_id)
     user = post.user
+    tags = Tag.query.all()
 
-    return render_template('form/post/edit/post.html', post=post, user=user)
+    return render_template('form/post/edit/post.html', post=post, user=user, tags=tags)
 
 @app.route('/posts/<int:post_id>/edit', methods=['POST'])
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     post.title = request.form['title']
     post.content = request.form['content']
+    # Empty tags list first when added updating new tags 
+    post.tags = []
+    tags = request.form.getlist('tag')
 
+    for tag_name in tags:
+        tag = Tag.query.filter_by(name=tag_name).one()
+        post.tags.append(tag)
+    
     db.session.commit()
 
     return redirect(f'/posts/{post_id}')
@@ -153,7 +161,6 @@ def add_tag():
 @app.route('/tags/<int:tag_id>')
 def get_tag_details(tag_id):
     tag = Tag.query.get_or_404(tag_id)
-    # tag.name = request.form['name']
 
     db.session.add(tag)
     db.session.commit()
