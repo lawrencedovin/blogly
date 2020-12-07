@@ -124,6 +124,12 @@ def delete_post(post_id):
 
     return redirect(f'/users/{user_id}')
 
+@app.route('/tags')
+def list_tags():
+    tags = Tag.query.all()
+
+    return render_template('/list/tag.html', tags=tags)
+
 # 404 Error handling
 @app.errorhandler(404) 
 def not_found(e): 
