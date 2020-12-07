@@ -134,6 +134,16 @@ def list_tags():
 def show_add_tag_form():
     return render_template('/form/post/add/tag.html')
 
+@app.route('/tags/new', methods=['POST'])
+def add_tag():
+    name = request.form['name']
+
+    new_tag = Tag(name=name)
+
+    db.session.add(new_tag)
+    db.session.commit()
+
+    return redirect('/tags')
 
 # 404 Error handling
 @app.errorhandler(404) 
