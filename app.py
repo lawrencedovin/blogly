@@ -83,10 +83,14 @@ def show_add_post_form(user_id):
 def add_post(user_id):
     title = request.form['title']
     content = request.form['content']
+    tags = request.form.getlist('tag')
 
     post = Post(title=title, content=title, user_id=user_id)
 
-    db.session.add(post)
+    for tag_name in tags:
+        tag = Tag.query.filter_by(name=tag_name).one()
+        post.tags.append(tag)
+    
     db.session.commit()
 
     return redirect(f'/users/{user_id}')
