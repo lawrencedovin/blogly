@@ -161,8 +161,15 @@ def show_edit_tag_form(tag_id):
 
     return render_template('form/post/edit/tag.html', tag=tag)
 
-# @app.route('/tags/edit/<int:tag_id>')
-# def edit_tag(tag_id):
+@app.route('/tags/<int:tag_id>/edit', methods=['POST'])
+def edit_tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+    tag.name = request.form['name']
+
+    db.session.commit()
+
+    return redirect(f'/tags/{tag.id}')
+
 
 # 404 Error handling
 @app.errorhandler(404) 
