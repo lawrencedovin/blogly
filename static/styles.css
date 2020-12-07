@@ -108,3 +108,13 @@ label {
   margin: 1rem;
   margin-top: 0
 }
+
+.form-check-input {
+  height: 1.2rem;
+  width: 1.2rem;
+}
+
+.form-check-label {
+  font-size: 1.2rem;
+  padding-left: .5rem;
+}

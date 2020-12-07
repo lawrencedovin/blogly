@@ -75,8 +75,9 @@ def delete_user(user_id):
 @app.route('/users/<int:user_id>/posts/new')
 def show_add_post_form(user_id):
     user = User.query.get_or_404(user_id)
+    tags = Tag.query.all()
 
-    return render_template('form/post/add/post.html', user=user)
+    return render_template('form/post/add/post.html', user=user, tags=tags)
 
 @app.route('/users/<int:user_id>/posts/new', methods=['POST'])
 def add_post(user_id):
