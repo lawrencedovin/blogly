@@ -1,3 +1,4 @@
+import flask
 from flask import Flask, request, render_template, redirect, flash, session
 from sqlalchemy import desc, asc
 from flask_debugtoolbar import DebugToolbarExtension
@@ -21,24 +22,22 @@ def list_users():
 
     return render_template('list/user.html', users=users)
 
-@app.route('/users/new')
-def show_create_user_form():
+@app.route('/users/new', methods=['GET', 'POST'])
+def create_user():
     """Get view for create user form"""
     
-    return render_template('form/user/create-user.html')
+    if flask.request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        image_url = request.form['image_url']
 
-@app.route('/users/new', methods=['POST'])
-def create_user():
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    image_url = request.form['image_url']
+        new_user = User(first_name=first_name, last_name=last_name, image_url=image_url)
 
-    new_user = User(first_name=first_name, last_name=last_name, image_url=image_url)
-
-    db.session.add(new_user)
-    db.session.commit()
-
-    return redirect('/')
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect('/')
+    else:
+        return render_template('form/user/create-user.html')
 
 @app.route('/users/<int:user_id>')
 def get_user_details(user_id):
@@ -47,23 +46,19 @@ def get_user_details(user_id):
 
     return render_template('details/user.html', user=user, full_name=full_name)
 
-@app.route('/users/<int:user_id>/edit')
-def show_edit_user_form(user_id):
+@app.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
+def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     full_name = user.get_full_name()
 
-    return render_template('form/user/edit-user.html', user=user, full_name=full_name)
-
-@app.route('/users/<int:user_id>/edit', methods=['POST'])
-def edit_user(user_id):
-    user = User.query.get_or_404(user_id)
-    user.first_name = request.form['first_name']
-    user.last_name = request.form['last_name']
-    user.image_url = request.form['image_url']
-
-    db.session.commit()
-
-    return redirect('/')
+    if flask.request.method == 'POST':
+        user.first_name = request.form['first_name']
+        user.last_name = request.form['last_name']
+        user.image_url = request.form['image_url']
+        db.session.commit()
+        return redirect('/')
+    else:
+        return render_template('form/user/edit-user.html', user=user, full_name=full_name)
 
 @app.route('/users/<int:user_id>/delete', methods=['POST'])
 def delete_user(user_id):
@@ -72,28 +67,26 @@ def delete_user(user_id):
 
     return redirect('/')
 
-@app.route('/users/<int:user_id>/posts/new')
-def show_add_post_form(user_id):
-    user = User.query.get_or_404(user_id)
-    tags = Tag.query.all()
-
-    return render_template('form/post/add/post.html', user=user, tags=tags)
-
-@app.route('/users/<int:user_id>/posts/new', methods=['POST'])
+@app.route('/users/<int:user_id>/posts/new', methods=['GET', 'POST'])
 def add_post(user_id):
-    title = request.form['title']
-    content = request.form['content']
-    tags = request.form.getlist('tag')
+    user = User.query.get_or_404(user_id)
 
-    post = Post(title=title, content=title, user_id=user_id)
+    if flask.request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        tags = request.form.getlist('tag')
 
-    for tag_name in tags:
-        tag = Tag.query.filter_by(name=tag_name).one()
-        post.tags.append(tag)
-    
-    db.session.commit()
+        post = Post(title=title, content=title, user_id=user_id)
 
-    return redirect(f'/users/{user_id}')
+        for tag_name in tags:
+            tag = Tag.query.filter_by(name=tag_name).one()
+            post.tags.append(tag)
+
+        db.session.commit()
+        return redirect(f'/users/{user_id}')
+    else:
+        tags = Tag.query.all()
+        return render_template('form/post/add/post.html', user=user, tags=tags)
 
 @app.route('/posts/<int:post_id>')
 def get_post_details(post_id):
@@ -102,30 +95,28 @@ def get_post_details(post_id):
 
     return render_template('details/post.html', post=post, user=user)
 
-@app.route('/posts/<int:post_id>/edit')
-def show_edit_post_form(post_id):
+@app.route('/posts/<int:post_id>/edit', methods=['GET', 'POST'])
+def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     user = post.user
     tags = Tag.query.all()
 
-    return render_template('form/post/edit/post.html', post=post, user=user, tags=tags)
+    if flask.request.method == 'POST':
+        post.title = request.form['title']
+        post.content = request.form['content']
+        # Empty tags list first when added updating new tags 
+        post.tags = []
+        tags = request.form.getlist('tag')
 
-@app.route('/posts/<int:post_id>/edit', methods=['POST'])
-def edit_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    post.title = request.form['title']
-    post.content = request.form['content']
-    # Empty tags list first when added updating new tags 
-    post.tags = []
-    tags = request.form.getlist('tag')
-
-    for tag_name in tags:
-        tag = Tag.query.filter_by(name=tag_name).one()
-        post.tags.append(tag)
+        for tag_name in tags:
+            tag = Tag.query.filter_by(name=tag_name).one()
+            post.tags.append(tag)
     
-    db.session.commit()
+        db.session.commit()
 
-    return redirect(f'/posts/{post_id}')
+        return redirect(f'/posts/{post_id}')
+    else:
+        return render_template('form/post/edit/post.html', post=post, user=user, tags=tags)
 
 @app.route('/posts/<int:post_id>/delete', methods=['POST'])
 def delete_post(post_id):
