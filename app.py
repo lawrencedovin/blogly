@@ -19,7 +19,7 @@ def list_users():
     """List all Users"""
     users = User.query.filter().order_by(User.last_name.asc(), User.first_name.asc())
 
-    return render_template('user-list.html', users=users)
+    return render_template('list/user.html', users=users)
 
 @app.route('/users/new')
 def show_create_user_form():
@@ -76,7 +76,7 @@ def delete_user(user_id):
 def show_add_post_form(user_id):
     user = User.query.get_or_404(user_id)
 
-    return render_template('form/post/add-post.html', user=user)
+    return render_template('form/post/add/post.html', user=user)
 
 @app.route('/users/<int:user_id>/posts/new', methods=['POST'])
 def add_post(user_id):
@@ -102,7 +102,7 @@ def show_edit_post_form(post_id):
     post = Post.query.get_or_404(post_id)
     user = post.user
 
-    return render_template('form/post/edit-post.html', post=post, user=user)
+    return render_template('form/post/edit/post.html', post=post, user=user)
 
 @app.route('/posts/<int:post_id>/edit', methods=['POST'])
 def edit_post(post_id):
@@ -129,6 +129,11 @@ def list_tags():
     tags = Tag.query.all()
 
     return render_template('/list/tag.html', tags=tags)
+
+@app.route('/tags/new')
+def show_add_tag_form():
+    return render_template('/form/post/add/tag.html')
+
 
 # 404 Error handling
 @app.errorhandler(404) 
