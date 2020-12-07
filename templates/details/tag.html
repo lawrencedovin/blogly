@@ -1,21 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
+{% block title %} {{tag.name}} Details {% endblock %}
 {% block content %}
-<h1>{{tag.name}}</h1>
-<ul>
-    {% for post in tag.posts %}
-    <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
-    {% endfor %}
-</ul>
-<div class="row">
-    <a
-    class="btn btn-primary"
-    href="/tags/{{tag.id}}/edit"
-    role="button"
-    >Edit</a>
-    <form action="/tags/{{tag.id}}/delete" method="POST">
-        <button type="submit" class="btn btn-danger float-left">
-          Delete
-        </button>
-    </form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{tag.name}}</h1>
+      <ul>
+        {% for post in tag.posts %}
+        <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+        {% endfor %}
+      </ul>
+      <div class="row">
+        <a class="btn btn-primary" href="/tags/{{tag.id}}/edit" role="button"
+          >Edit</a
+        >
+        <form action="/tags/{{tag.id}}/delete" method="POST">
+          <button type="submit" class="btn btn-danger float-left">
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
