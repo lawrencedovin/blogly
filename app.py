@@ -15,6 +15,7 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 
+# USER ROUTES
 @app.route('/')
 def list_users():
     """List all Users"""
@@ -88,6 +89,7 @@ def add_post(user_id):
         tags = Tag.query.all()
         return render_template('form/post/add/post.html', user=user, tags=tags)
 
+# POSTS ROUTES
 @app.route('/posts/<int:post_id>')
 def get_post_details(post_id):
     post = Post.query.get_or_404(post_id)
@@ -98,8 +100,6 @@ def get_post_details(post_id):
 @app.route('/posts/<int:post_id>/edit', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
-    user = post.user
-    tags = Tag.query.all()
 
     if flask.request.method == 'POST':
         post.title = request.form['title']
@@ -116,6 +116,8 @@ def edit_post(post_id):
 
         return redirect(f'/posts/{post_id}')
     else:
+        user = post.user
+        tags = Tag.query.all()
         return render_template('form/post/edit/post.html', post=post, user=user, tags=tags)
 
 @app.route('/posts/<int:post_id>/delete', methods=['POST'])
@@ -128,26 +130,26 @@ def delete_post(post_id):
 
     return redirect(f'/users/{user_id}')
 
+# TAGS ROUTE
 @app.route('/tags')
 def list_tags():
     tags = Tag.query.filter().order_by(Tag.name.asc())
 
     return render_template('/list/tag.html', tags=tags)
 
-@app.route('/tags/new')
+@app.route('/tags/new', methods=['GET', 'POST'])
 def show_add_tag_form():
-    return render_template('/form/post/add/tag.html')
+    if flask.request.method == 'POST':
+        name = request.form['name']
 
-@app.route('/tags/new', methods=['POST'])
-def add_tag():
-    name = request.form['name']
+        new_tag = Tag(name=name)
 
-    new_tag = Tag(name=name)
+        db.session.add(new_tag)
+        db.session.commit()
 
-    db.session.add(new_tag)
-    db.session.commit()
-
-    return redirect('/tags')
+        return redirect('/tags')
+    else:
+        return render_template('/form/post/add/tag.html')
 
 @app.route('/tags/<int:tag_id>')
 def get_tag_details(tag_id):
@@ -158,20 +160,18 @@ def get_tag_details(tag_id):
 
     return render_template('details/tag.html', tag=tag)
 
-@app.route('/tags/<int:tag_id>/edit')
+@app.route('/tags/<int:tag_id>/edit', methods=['GET', 'POST'])
 def show_edit_tag_form(tag_id):
     tag = Tag.query.get_or_404(tag_id)
 
-    return render_template('form/post/edit/tag.html', tag=tag)
+    if flask.request.method == 'POST':
+        tag.name = request.form['name']
 
-@app.route('/tags/<int:tag_id>/edit', methods=['POST'])
-def edit_tag(tag_id):
-    tag = Tag.query.get_or_404(tag_id)
-    tag.name = request.form['name']
+        db.session.commit()
 
-    db.session.commit()
-
-    return redirect(f'/tags/{tag.id}')
+        return redirect(f'/tags/{tag.id}')
+    else:
+        return render_template('form/post/edit/tag.html', tag=tag)
 
 @app.route('/tags/<int:tag_id>/delete', methods=['POST'])
 def delete_tag(tag_id):
@@ -181,7 +181,6 @@ def delete_tag(tag_id):
     db.session.commit()
 
     return redirect('/tags')
-
 
 # 404 Error handling
 @app.errorhandler(404) 
