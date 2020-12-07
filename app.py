@@ -139,7 +139,7 @@ def delete_post(post_id):
 
 @app.route('/tags')
 def list_tags():
-    tags = Tag.query.all()
+    tags = Tag.query.filter().order_by(Tag.name.asc())
 
     return render_template('/list/tag.html', tags=tags)
 
